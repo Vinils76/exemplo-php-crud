@@ -5,9 +5,14 @@ if( isset($_POST['inserir']) ){
     require_once '../src/funcoes-fabricantes.php';
 
     // Capturando o que foi digitado no campo nome
-    $nome = $_POST['nome'];
+    // $nome = $_POST['nome'];
+    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
 
+    // Chamando a função e passando dados de conexão e o nome digitado
     inserirFabricante($conexao, $nome);
+
+    //Redirecionando
+    header("location:listar.php");
 }
 ?>
 
@@ -30,7 +35,11 @@ if( isset($_POST['inserir']) ){
             </p>
             <button type="submit" name="inserir">Inserir fabricante</button>
         </form>
+
+        <p><a href="../fabricantes/listar.php">Visualizar Fabricantes</a></p>
     </div>
+
+
     
 </body>
 </html>
