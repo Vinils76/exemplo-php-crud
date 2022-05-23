@@ -1,6 +1,6 @@
 <?php
-// Verificando de o botão do formulário foi acionado
-if( isset($_POST['inserir']) ){
+// Verificando se o botão do formulário foi acionado
+if ( isset($_POST['inserir']) ){
     // Importando as funções e a conexão
     require_once '../src/funcoes-fabricantes.php';
 
