@@ -1,5 +1,8 @@
 <?php
 
+?>
+<?php
+
 if ( isset($_POST['inserir']) ){
     require_once '../src/funcoes-produtos.php';
 
@@ -11,9 +14,9 @@ if ( isset($_POST['inserir']) ){
 
     $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_SANITIZE_NUMBER_INT);
 
-    $fabricante = filter_input(INPUT_POST, 'fabricante_id', FILTER_SANITIZE_NUMBER_INT);
+    $fabricante = filter_input(INPUT_POST, 'fabricante', FILTER_SANITIZE_NUMBER_INT);
 
-    inserirProduto($conexao, $nome, $descricao, $preco, $quantidade, $fabricante);
+    $inserirProduto = inserirProduto($conexao, $nome, $descricao, $preco, $quantidade, $fabricante);
 
     header("location:produtos.php");
 }
@@ -29,24 +32,43 @@ if ( isset($_POST['inserir']) ){
     <title>Produtos | INSERT</title>
 </head>
 <body>
+    
     <div class="conteiner">
     <form action="" method="post">
     <p>
         <label for="nome">Nome:</label>
-        <input type="text" name="nome" id="nome">
+        <input type="text" name="nome" id="nome" required>
     </p>
-    <p>
-        <label for="descricao">Descrição:</label>
-        <input type="text" name="descricao" id="descricao">
-    </p>
+
     <p>
         <label for="preco">Preço:</label>
-        <input type="number" name="preco" id="preco">
+        <input type="number" min="0" max="10000" step="0.01"name="preco" id="preco" required>
     </p>
+
     <p>
         <label for="quantidade">Quantidade:</label>
-        <input type="number" name="quantidade" id="quantidade">
+        <input type="number" min="0" max="100" name="quantidade" id="quantidade" required>
     </p>
+
+<?php 
+foreach($inserirProduto as $inserir) { ?>
+    <p>
+    <label for="fabricante">Fabricante:</label>
+    <select name="fabricante" id="fabricante" required>
+        <option value="<?=$inserir['fabricante']?>"></option>
+        <!-- Opções de Fabricantes -->
+    </select>
+    </p>
+
+<?php
+}
+?>
+
+    <p>
+        <label for="descricao">Descrição:</label> <br>
+        <textarea name="descricao" id="descricao" cols="30" rows="3" required></textarea>
+    </p>
+
     <button type="submit" name="inserir">Inserir Produto</button>
     </form>
 
