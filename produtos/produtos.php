@@ -9,7 +9,7 @@ $listaDeProdutos = lerProdutos($conexao);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos</title>
     <style>
-        table, td {
+        table, td, th {
             border: 1px solid white;
             text-align: center;
             background-color: black;
@@ -17,6 +17,19 @@ $listaDeProdutos = lerProdutos($conexao);
         }
 
         table a {
+            text-decoration: none;
+            color: white;
+        }
+
+        article {
+            background-color: black;
+            color: white;
+            border: 1px solid white;
+            padding: 5px;
+            width: 60%;
+        }
+
+        article a {
             text-decoration: none;
             color: white;
         }
@@ -38,6 +51,7 @@ $listaDeProdutos = lerProdutos($conexao);
                 <th>Descrição</th>
                 <th>Preço</th>
                 <th>Quantidade</th>
+                <th>Fabricante</th>
                 <th colspan="2">Operações</th>
             </tr>
         </thead>
@@ -47,13 +61,14 @@ $listaDeProdutos = lerProdutos($conexao);
             foreach ($listaDeProdutos as $produtos) { ?>
 
             <tr>
-                <td> <?=$produtos['id']?></td>
-                <td> <?=$produtos['nome']?></td>
+                <td> <?=$produtos['idProduto']?></td>
+                <td> <?=$produtos['produto']?></td>
                 <td> <?=$produtos['descricao']?></td>
                 <td> <?=$produtos['preco']?></td>
                 <td> <?=$produtos['quantidade']?></td>
-                <td> <a href="atualizar.php?id=<?=$produtos['id']?>">Atualizar</a></td>
-                <td> <a href="atualizar.php?id=<?=$produtos['id']?>">Excluir</a></td>
+                <td> <?=$produtos['fabricante']?></td>
+                <td> <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Atualizar</a></td>
+                <td> <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Excluir</a></td>
             </tr>
 
             <?php
@@ -61,7 +76,31 @@ $listaDeProdutos = lerProdutos($conexao);
             ?>   
         </tbody>
     </table>
+
+    <div>
+        <h1>Lista de Produtos</h1>
+        <hr>
+        <h2>Selecionando</h2>
+    </div>
+
+    <?php
+    foreach ($listaDeProdutos as $produtos) { ?>
+    <div class="produtos">
+        <article>
+            <h3><?=$produtos['produto']?></h3>
+            <p>Descrição: <?=$produtos['descricao']?></p>
+            <p>Preço: R$<?=formtaMoeda($produtos['preco'])?></p>
+            <p>Quantidade: <?=$produtos['quantidade']?></p>
+            <p>Fabricante: <?=$produtos['fabricante']?></p>
+            <p><a href="atualizar.php?id=<?=$produtos['idProduto']?>">Atualizar</a>
+            <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Excluir</a></p>
+        </article> 
     
+    </div>
+    <?php
+    }
+    ?>
+   
 <p><a href="../produtos/inserir.php">Inserir Produto</a></p>
 
 </body>

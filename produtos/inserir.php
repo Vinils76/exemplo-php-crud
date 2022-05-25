@@ -11,7 +11,9 @@ if ( isset($_POST['inserir']) ){
 
     $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_SANITIZE_NUMBER_INT);
 
-    inserirProduto($conexao, $nome, $descricao, $preco, $quantidade);
+    $fabricante = filter_input(INPUT_POST, 'fabricante_id', FILTER_SANITIZE_NUMBER_INT);
+
+    inserirProduto($conexao, $nome, $descricao, $preco, $quantidade, $fabricante);
 
     header("location:produtos.php");
 }
