@@ -18,14 +18,14 @@ function lerProdutos(PDO $conexao):array {
 };
 
 
-function inserirProduto(PDO $conexao, string $nome, string $descricao, int $preco, int $quantidade, int $fabricante):void {
-    $sql = "INSERT INTO produtos(nome, descricao, preco, quantidade, fabricante_id) VALUES(:nome, :descricao, :preco, :quantidade, :fabricante_id)";
+function inserirProduto(PDO $conexao, string $nome, float $preco, int $quantidade, string $descricao, int $fabricante):void {
+    $sql = "INSERT INTO produtos(nome, preco, quantidade, descricao, fabricante_id) VALUES(:nome, :preco, :quantidade, :descricao, :fabricante_id)";
     try {
         $consulta = $conexao->prepare($sql);
         $consulta->bindParam(':nome', $nome, PDO::PARAM_STR);
-        $consulta->bindParam(':descricao', $descricao, PDO::PARAM_STR);
-        $consulta->bindParam(':preco', $preco, PDO::PARAM_INT);
+        $consulta->bindParam(':preco', $preco, PDO::PARAM_STR);
         $consulta->bindParam(':quantidade', $quantidade, PDO::PARAM_INT);
+        $consulta->bindParam(':descricao', $descricao, PDO::PARAM_STR);
         $consulta->bindParam(':fabricante_id', $fabricante, PDO::PARAM_INT);
 
         $consulta->execute();
@@ -36,6 +36,38 @@ function inserirProduto(PDO $conexao, string $nome, string $descricao, int $prec
 };
 
 
+function atualizarProduto(PDO $conexao, string $nome, float $preco, int $quantidade, string $descricao, int $fabricante):void {
+    $sql = "UPDATE produtos SET nome, preco, quantidade, descricao, descricao, fabricante_id = :nome, :preco, ;quantidade, :descricao, :fabricante_id WHERE nome = :nome";
+    try {
+        $consulta = $conexao->prepare($sql);
+        $consulta->bindParam(':nome', $nome, PDO::PARAM_STR);
+        $consulta->bindParam(':preco', $preco, PDO::PARAM_STR);
+        $consulta->bindParam('quantidade', $quantidade, PDO::PARAM_INT);
+        $consulta->bindParam('descricao', $descricao, PDO::PARAM_STR);
+        $consulta->bindParam(':fabricante_id', $fabricante, PDO::PARAM_INT);
+        $consulta->execute();
+    } catch (Exception $erro) {
+        die("Erro: ".$erro->getMessage());
+    }
+}
+
+function lerUmProduto(PDO $conexao, int $id):array {
+    $sql = "SELECT id, nome, preco, quantidade, descricao, fabricante_id FROM
+    produtos WHERE id = :id";
+
+    try {
+        $consulta = $conexao->prepare($sql);
+        $consulta->bindParam(':id', $id, PDO::PARAM_INT);
+        $consulta->execute();
+        $resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $erro) {
+        die("Erro: ".$erro->getMessage());
+    }
+    return $resultado;
+}
+
+
+
 // Função utilitárias
 function dump($dados){
     echo "<pre>";
@@ -43,7 +75,7 @@ function dump($dados){
     echo "</pre>";
 }
 
-function formtaMoeda(float $valor):string {
-    return "R$ ".number_format($valor, 2, '.', ',');
+function formataMoeda(float $valor):string {
+    return "R$ ".number_format($valor, 2, ',', '.');
 }
 

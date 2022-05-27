@@ -46,11 +46,10 @@ $listaDeProdutos = lerProdutos($conexao);
         <caption>Lista de Produtos</caption>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nome</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Quantidade</th>
+                <th>preco</th>
+                <th>quantidade</th>
+                <th>descricao</th>
                 <th>Fabricante</th>
                 <th colspan="2">Operações</th>
             </tr>
@@ -61,11 +60,10 @@ $listaDeProdutos = lerProdutos($conexao);
             foreach ($listaDeProdutos as $produtos) { ?>
 
             <tr>
-                <td> <?=$produtos['idProduto']?></td>
                 <td> <?=$produtos['produto']?></td>
+                <td> <?=formataMoeda($produtos['preco'])?></td>
+                <td> <?=$produtos['quantidade']?> itens</td>
                 <td> <?=$produtos['descricao']?></td>
-                <td> <?=$produtos['preco']?></td>
-                <td> <?=$produtos['quantidade']?></td>
                 <td> <?=$produtos['fabricante']?></td>
                 <td> <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Atualizar</a></td>
                 <td> <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Excluir</a></td>
@@ -88,9 +86,9 @@ $listaDeProdutos = lerProdutos($conexao);
     <div class="produtos">
         <article>
             <h3><?=$produtos['produto']?></h3>
-            <p>Descrição: <?=$produtos['descricao']?></p>
-            <p>Preço: R$<?=formtaMoeda($produtos['preco'])?></p>
-            <p>Quantidade: <?=$produtos['quantidade']?></p>
+            <p>preco:<?=formataMoeda($produtos['preco'])?></p>
+            <p>quantidade: <?=$produtos['quantidade']?> itens</p>
+            <p>descricao: <?=$produtos['descricao']?></p>
             <p>Fabricante: <?=$produtos['fabricante']?></p>
             <p><a href="atualizar.php?id=<?=$produtos['idProduto']?>">Atualizar</a>
             <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Excluir</a></p>

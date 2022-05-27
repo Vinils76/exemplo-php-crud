@@ -1,24 +1,11 @@
 <?php
 require_once '../src/funcoes-fabricantes.php';
+require_once '../src/funcoes-produtos.php';
 $listaDeFabricantes = lerFabricantes($conexao);
 
-if ( isset($_POST['inserir']) ){
-    require_once '../src/funcoes-produtos.php';
+$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
 
-    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
-
-    $preco = filter_input(INPUT_POST, 'preco', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-
-    $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_SANITIZE_NUMBER_INT);
-
-    $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
-
-    $fabricante = filter_input(INPUT_POST, 'fabricante', FILTER_SANITIZE_NUMBER_INT);
-
-    inserirProduto($conexao, $nome, $preco, $quantidade, $descricao, $fabricante);
-
-    header("location:produtos.php");
-}
+$produto = lerUmProduto($conexao, $id)
 
 ?>
 
@@ -28,11 +15,15 @@ if ( isset($_POST['inserir']) ){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos | INSERT</title>
+    <title>Produtos | Atualizar</title>
 </head>
 <body>
     
     <div class="conteiner">
+    <h1>Produtos UPDATE</h1>
+    <hr>
+
+
     <form action="" method="post">
     <p>
         <label for="nome">Nome:</label>
@@ -55,7 +46,7 @@ if ( isset($_POST['inserir']) ){
     <select name="fabricante" id="fabricante" required>
     <?php 
     foreach ($listaDeFabricantes as $fabricante) { ?>
-        <option value="<?=$fabricante['id']?>">
+        <option value="atualizar.php?id=<?= $fabricante['id']?>">
             <?=$fabricante['nome']?>
         </option>
         <!-- Opções de Fabricantes -->
@@ -72,13 +63,14 @@ if ( isset($_POST['inserir']) ){
         <textarea name="descricao" id="descricao" cols="30" rows="3" required></textarea>
     </p>
 
-    <button type="submit" name="inserir">Inserir Produto</button>
+    <button type="submit" name="atualizar">Atualizar Produto</button>
+    
     </form>
 
     <p><a href="produtos.php">Visualizar Produtos</a></p>
-    </div>
 
     <p><a href="../index.php">Home</a></p>
+    </div>
     
 </body>
 </html>
