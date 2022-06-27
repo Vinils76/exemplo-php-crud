@@ -66,7 +66,7 @@ $listaDeProdutos = lerProdutos($conexao);
                 <td> <?=$produtos['descricao']?></td>
                 <td> <?=$produtos['fabricante']?></td>
                 <td> <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Atualizar</a></td>
-                <td> <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Excluir</a></td>
+                <td> <a href="excluir.php?id=<?=$produtos['idProduto']?>" class="excluir">Excluir</a></td>
             </tr>
 
             <?php
@@ -91,13 +91,32 @@ $listaDeProdutos = lerProdutos($conexao);
             <p>descricao: <?=$produtos['descricao']?></p>
             <p>Fabricante: <?=$produtos['fabricante']?></p>
             <p><a href="atualizar.php?id=<?=$produtos['idProduto']?>">Atualizar</a>
-            <a href="atualizar.php?id=<?=$produtos['idProduto']?>">Excluir</a></p>
+            <a href="excluir.php?id=<?=$produtos['idProduto']?>" class="excluir">Excluir</a></p>
         </article> 
     
     </div>
     <?php
     }
     ?>
+
+<script>
+        const links = document.querySelectorAll('.excluir');
+
+        for (let i = 0; i < links.length; i++) {
+            links[i].addEventListener("click", function(event) {
+
+                event.preventDefault();
+
+                let resposta = confirm("Deseja realmente excluir?");
+                if (resposta) {
+                    location.href = links[i].getAttribute('href');
+                }
+
+
+            });
+        }
+    </script>
+
    
 <p><a href="../produtos/inserir.php">Inserir Produto</a></p>
 
