@@ -14,15 +14,18 @@
         <hr>
 
 <?php
-require_once '../src/funcoes-fabricantes.php';
-// Obtendo o valor do parâmetro da URL
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-$fabricante = lerUmFabricante($conexao, $id);
+require_once '../vendor/autoload.php';
+
+$fabricante = new CrudPoo\Fabricante;
+
+$fabricante->setId( $_GET["id"] );
+
+$arrFabricante = $fabricante->lerUmFabricante();
 
 if(isset($_POST['atualizar'])) {
-    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+    $fabricante->setNome( $_POST["nome"]);
 
-    atualizarFabricante($conexao, $id, $nome);
+    $fabricante->atualizarFabricante();
 
     // echo "<p>Fabricante atualizado com sucesso!</p>";
     // header("Refresh:5; url=listar.php");
@@ -32,10 +35,10 @@ if(isset($_POST['atualizar'])) {
 ?>
 
         <form action="" method="post">
-            <input type="hidden" name="<?=$fabricante['nome']?>">
+            <input type="hidden" name="<?=$arrFabricante['nome']?>">
             <p>
                 <label for="nome">Nome:</label>
-                <input value="<?=$fabricante['nome']?>"type="text" name="nome" id="nome">
+                <input value="<?=$arrFabricante['nome']?>"type="text" name="nome" id="nome">
             </p>
             <button type="submit" name="atualizar">Atualizar fabricante</button>
         </form>
