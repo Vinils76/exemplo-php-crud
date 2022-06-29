@@ -1,7 +1,7 @@
 <?php
-require_once "../src/funcoes-produtos.php";
-
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-excluirProduto($conexao, $id);
+require_once "../vendor/autoload.php";
+$produtos = new CrudPoo\Produto;
+$produtos->setId($_GET["id"]);
+$produtos->excluirProduto();
 
 header("location:produtos.php");

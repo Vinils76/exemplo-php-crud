@@ -1,6 +1,12 @@
-<?php require_once "../src/funcoes-produtos.php";
-$listaDeProdutos = lerProdutos($conexao);
+<?php
+use CrudPoo\Produto;
+
+require_once "../vendor/autoload.php";
+
+$produtos = new Produto;
+$listaDeProdutos = $produtos->lerProdutos();
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -61,7 +67,7 @@ $listaDeProdutos = lerProdutos($conexao);
 
             <tr>
                 <td> <?=$produtos['produto']?></td>
-                <td> <?=formataMoeda($produtos['preco'])?></td>
+                <td> <?=number_format($produtos['preco'], 2, ",", ".")?></td>
                 <td> <?=$produtos['quantidade']?> itens</td>
                 <td> <?=$produtos['descricao']?></td>
                 <td> <?=$produtos['fabricante']?></td>
@@ -86,7 +92,7 @@ $listaDeProdutos = lerProdutos($conexao);
     <div class="produtos">
         <article>
             <h3><?=$produtos['produto']?></h3>
-            <p>preco:<?=formataMoeda($produtos['preco'])?></p>
+            <p>preco:<?=number_format($produtos['preco'], 2, ",", ".")?></p>
             <p>quantidade: <?=$produtos['quantidade']?> itens</p>
             <p>descricao: <?=$produtos['descricao']?></p>
             <p>Fabricante: <?=$produtos['fabricante']?></p>

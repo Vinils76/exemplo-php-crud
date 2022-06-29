@@ -1,27 +1,39 @@
 <?php
-require_once '../src/funcoes-fabricantes.php';
-require_once '../src/funcoes-produtos.php';
-$listaDeFabricantes = lerFabricantes($conexao);
+use CrudPoo\Produto;
+use CrudPoo\Fabricante;
+require_once '../vendor/autoload.php';
 
-$id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
+$produtos = new Produto;
+$fabricante = new Fabricante;
+
+$listaDeFabricantes = $fabricante->lerFabricantes();
+
+$produtos->setId(
+    $_GET['id'] );
 
 // Chamando a função e recebendo os dados do produto
-$produto = lerUmProduto($conexao, $id);
+$arrProdutos = $produtos->lerUmProduto();
 
 if ( isset($_POST['atualizar']) ){
     
 
-    $nome = filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS);
+    $produtos->setNome(
+        $_POST['nome'] );
 
-    $preco = filter_input(INPUT_POST, 'preco', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $produtos->setPreco(
+        $_POST['preco'] );
 
-    $quantidade = filter_input(INPUT_POST, 'quantidade', FILTER_SANITIZE_NUMBER_INT);
+        $produtos->setQuantidade(
+            $_POST['quantidade'] );
 
-    $descricao = filter_input(INPUT_POST, 'descricao', FILTER_SANITIZE_SPECIAL_CHARS);
+        $produtos->setDescricao(
+        $_POST['descricao'] );
 
-    $fabricante = filter_input(INPUT_POST, 'fabricante', FILTER_SANITIZE_NUMBER_INT);
+        $produtos->setFabricanteId(
+            $_POST['fabricante'] );
 
-    atualizarProduto($conexao, $id, $nome, $preco, $quantidade, $descricao, $fabricante);
+
+    $produtos->atualizarProduto();
 
     header("location:produtos.php");
 }
@@ -45,17 +57,17 @@ if ( isset($_POST['atualizar']) ){
     <form action="" method="post">
     <p>
         <label for="nome">Nome:</label>
-        <input value="<?=$produto['nome']?>" type="text" name="nome" id="nome" required>
+        <input value="<?=$arrProdutos['nome']?>" type="text" name="nome" id="nome" required>
     </p>
 
     <p>
         <label for="preco">Preço:</label>
-        <input value="<?=$produto['preco']?> "type="number" min="0" max="10000" step="0.01" name="preco" id="preco" required>
+        <input value="<?=$arrProdutos['preco']?> "type="number" min="0" max="10000" step="0.01" name="preco" id="preco" required>
     </p>
 
     <p>
         <label for="quantidade">Quantidade:</label>
-        <input value="<?=$produto['quantidade']?>" type="number" min="0" max="100" name="quantidade" id="quantidade" required>
+        <input value="<?=$arrProdutos['quantidade']?>" type="number" min="0" max="100" name="quantidade" id="quantidade" required>
     </p>
 
 
@@ -69,7 +81,7 @@ if ( isset($_POST['atualizar']) ){
           /* Se chave estrangeira for idêntica à chave primária (ou seja,
             se o código do fabricante do produto bater com o código do 
             fabricante), então coloque o atributo selected no option */
-            if($produto['fabricante_id'] === $fabricante['id']) echo "selected ";
+            if($arrProdutos['fabricante_id'] === $fabricante['id']) echo "selected ";
             ?> 
                   value="<?=$fabricante['id']?>">
                     <?=$fabricante['nome']?>
@@ -83,7 +95,7 @@ if ( isset($_POST['atualizar']) ){
 
     <p>
         <label for="descricao">Descrição:</label> <br>
-        <textarea name="descricao" id="descricao" cols="30" rows="3"<?=$produto['descricao']?> required></textarea>
+        <textarea name="descricao" id="descricao" cols="30" rows="3"<?=$arrProdutos['descricao']?> required></textarea>
     </p>
 
     <button type="submit" name="atualizar">Atualizar Produto</button>
