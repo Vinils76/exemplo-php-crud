@@ -54,7 +54,26 @@ $fabricante = new CrudPoo\Fabricante;
             ?>
         </tbody>
     </table>
-    <p><a href="../fabricantes/inserir.php">Inserir fabricante</a></p>
+    <p><a href="../fabricantes/inserir.php">Inserir fabricante</a>
+            |
+
+        <?php
+        if(isset($_GET["exportarPDF"])){
+
+            //Inicializando uma sessão PHP
+            session_start();
+
+            // Criando variável de sessão
+            $_SESSION["dados"] = $listaDeFabricantes;
+
+            //redirecionando para o script de exportação
+            header("location:../exportarPdf.php");
+        }
+        ?>
+
+        <!-- flag/sinalizador com parâmetro exportarPDF -->
+        <a href="?exportarPDF">Exportar para PDF</a>
+    </p>
 
     <script>
         const links = document.querySelectorAll('.excluir');
